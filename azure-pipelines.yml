@@ -11,9 +11,8 @@ trigger:
 variables:
 - group: release
 - name: storageSAS
-  value: $[variables.tpstoragesas] # uses runtime expression
-- name: storageAccountName
-  value: $[variables.storageAccountName] # uses runtime expression
+  value: 'My STorage'
+
 
 pool:
   vmImage: 'ubuntu-latest'
