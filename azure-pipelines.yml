@@ -1,0 +1,36 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+  branches:
+    include:
+     - master/*
+
+variables:
+- group: release
+- name: storageSAS
+  value: $[variables.tpstoragesas] # uses runtime expression
+- name: storageAccountName
+  value: $[variables.storageAccountName] # uses runtime expression
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- script: echo Hello, world!
+  displayName: 'Run a one-line script'
+
+- script: |
+    echo Add other tasks to build, test, and deploy your project.
+    echo See https://aka.ms/yaml
+  displayName: 'Run a multi-line script'
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: $(azureSubscription)
+    scriptType: 'ps'
+    scriptLocation: 'inlineScript'
+    inlineScript: | 
+      mkdir $(Build.SourcesDirectory)\BlobFile
+      az storage blob download --container-name container1 --file $(Build.SourcesDirectory)\BlobFile --name "testfile.tar" --account-key $(storageSAS) --account-name $(storageAccountName)
