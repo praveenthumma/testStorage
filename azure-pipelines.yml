@@ -28,20 +28,12 @@ steps:
     echo $(storageAccount)
   displayName: 'Run a multi-line script'
 
-- task: DownloadPackage@1
-  inputs:
-    packageType: 'maven'
-    feed: '$(projectName)/$(feedName)' # <projectId>/<feedId>
-    definition: $(packageName)
-    version: '1.0.0-snapshot' # Should be normalized version
-    files: '*.war'
-    downloadPath: '$(Build.SourcesDirectory)'  
 
 - task: DownloadPackage@1
   continueOnError: false  
   inputs:
     packageType: 'maven'
-    feed: '$(projectId)/$(feedId)' # <projectId>/<feedId>
+    feed: '$(feedId)' # <projectId>/<feedId>
     definition: $(packageName)
     version: '1.0.0-snapshot' # Should be normalized version
     files: '*.war'
