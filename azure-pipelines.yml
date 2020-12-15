@@ -41,7 +41,7 @@ steps:
   continueOnError: false  
   inputs:
     packageType: 'maven'
-    feed: '$(projectName)/$(feedName)' # <projectId>/<feedId>
+    feed: '$(projectId)/$(feedId)' # <projectId>/<feedId>
     definition: $(packageName)
     version: '1.0.0-snapshot' # Should be normalized version
     files: '*.war'
