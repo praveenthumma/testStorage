@@ -33,7 +33,7 @@ steps:
   continueOnError: false  
   inputs:
     packageType: 'maven'
-    feed: '$(feedId)' # <projectId>/<feedId>
+    feed: $(feedId) # if scoped to project <projectId>/<feedId> else just <feedId>
     definition: $(packageName)
     version: '1.0.0-snapshot' # Should be normalized version
     files: '*.war'
