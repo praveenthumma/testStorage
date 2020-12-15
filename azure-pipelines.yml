@@ -34,7 +34,7 @@ steps:
     scriptType: 'pscore'
     scriptLocation: 'inlineScript'
     inlineScript: | 
-      mkdir $(Build.SourcesDirectory)\BlobFile
+      mkdir $(Build.SourcesDirectory)\unzipped
       az storage blob download --container-name $(storageContainer) --file $(Build.SourcesDirectory)/$(zipfileName) --name $(zipfileName) --sas-token '$(sasTokenZip)' --account-name $(storageAccount)
       unzip -l $(Build.SourcesDirectory)/$(zipfileName) 
       unzip $(Build.SourcesDirectory)/$(zipfileName)  –d $(Build.SourcesDirectory)/unzipped
