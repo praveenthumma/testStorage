@@ -27,6 +27,16 @@ steps:
     echo $(storageContainer)
     echo $(storageAccount)
   displayName: 'Run a multi-line script'
+
+- task: DownloadPackage@1
+  inputs:
+    packageType: 'maven'
+    feed: '$(projectName)/$(feedName)' # <projectId>/<feedId>
+    definition: $(packageName)
+    version: '1.0.0-snapshot' # Should be normalized version
+    files: '*.war'
+    downloadPath: '$(Build.SourcesDirectory)'  
+
 - task: AzureCLI@2
   inputs:
     azureSubscription: $(azureSubscription)
