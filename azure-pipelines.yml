@@ -38,11 +38,25 @@ steps:
     scriptLocation: 'inlineScript'
     inlineScript: | 
       az storage blob download --container-name $(storageContainer) --file $(Build.SourcesDirectory)/$(zipfileName) --name $(zipfileName) --sas-token '$(sasTokenZip)' --account-name $(storageAccount)
-      unzip -l $(Build.SourcesDirectory)/$(zipfileName)
-      unzip $(Build.SourcesDirectory)/$(zipfileName)      
       ls -l
-      cp $(AppName)*.war $(Build.SourcesDirectory)/$(zipDirectory)/
-      mv $(AppName)*.war $(Build.SourcesDirectory)/$(zipDirectory)/
-      zip -r $(zipfileName) $(zipDirectory)/
       unzip -l $(Build.SourcesDirectory)/$(zipfileName)
+
+      echo "Removing existing war from zip"
+      zip -d $(Build.SourcesDirectory)/$(zipfileName) $(AppName)*.war
+      echo "Removed existing war from zip - CHeck"
+      unzip -l $(Build.SourcesDirectory)/$(zipfileName)
+      echo "Adding new war to existing zip"
+      zip -ur $(Build.SourcesDirectory)/$(zipfileName) $(AppName)*.war
+      echo "Added war to existing zip - CHeck"
+      unzip -l $(Build.SourcesDirectory)/$(zipfileName)
+      echo "Adding Same war to  zip"
+      zip -ur $(Build.SourcesDirectory)/$(zipfileName) $(AppName)*.war
+      echo "Added same war to existing zip - CHeck"
+      unzip -l $(Build.SourcesDirectory)/$(zipfileName)
+      echo "Removing existing war from zip"
+      zip -d $(Build.SourcesDirectory)/$(zipfileName) $(AppName)*.war
+      echo "Removed existing war from zip - CHeck"
+      unzip -l $(Build.SourcesDirectory)/$(zipfileName)          
+      az storage blob upload --container-name $(storageContainer) --file $(Build.SourcesDirectory)/$(zipfileName) --name $(zipfileName) --sas-token '$(sasTokenZip)' --account-name $(storageAccount)
+
 
