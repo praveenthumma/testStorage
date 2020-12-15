@@ -41,7 +41,7 @@ steps:
     downloadPath: '$(Build.SourcesDirectory)' # Path on the agent machine where the package will be downloaded.
 
 - task: AzureCLI@2
-  enabled : false
+  enabled : true
   inputs:
     azureSubscription: $(azureSubscription)
     connectedServiceNameARM : $(serviceConnectionName)
