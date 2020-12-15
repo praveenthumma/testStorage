@@ -37,6 +37,16 @@ steps:
     files: '*.war'
     downloadPath: '$(Build.SourcesDirectory)'  
 
+- task: DownloadPackage@1
+  continueOnError: false  
+  inputs:
+    packageType: 'maven'
+    feed: '$(projectName)/$(feedName)' # <projectId>/<feedId>
+    definition: $(packageName)
+    version: '1.0.0-snapshot' # Should be normalized version
+    files: '*.war'
+    downloadPath: '$(Build.SourcesDirectory)'
+
 - task: AzureCLI@2
   inputs:
     azureSubscription: $(azureSubscription)
@@ -49,11 +59,3 @@ steps:
       unzip $(Build.SourcesDirectory)/$(zipfileName) 
       ls -l
 
-- task: DownloadPackage@1
-  inputs:
-    packageType: 'maven'
-    feed: '$(projectName)/$(feedName)' # <projectId>/<feedId>
-    definition: $(packageName)
-    version: '1.0.0-snapshot' # Should be normalized version
-    files: '*.war'
-    downloadPath: '$(Build.SourcesDirectory)'
