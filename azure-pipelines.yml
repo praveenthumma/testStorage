@@ -35,7 +35,7 @@ steps:
     scriptLocation: 'inlineScript'
     inlineScript: | 
       mkdir $(Build.SourcesDirectory)\BlobFile
-      az storage blob download --container-name $(storageContainer) --file $(Build.SourcesDirectory)\$(zipfileName) --name "testfile.tar" --sas-token '$(sasToken)' --account-name $(storageAccount)
-      unzip -l $(Build.SourcesDirectory)\$(zipfileName) 
-      unzip $(Build.SourcesDirectory)\$(zipfileName)  –d $(Build.SourcesDirectory)\unzipped
-      ls -lR $(Build.SourcesDirectory)\unzipped
+      az storage blob download --container-name $(storageContainer) --file $(Build.SourcesDirectory)/$(zipfileName) --name $(zipfileName) --sas-token '$(sasTokenZip)' --account-name $(storageAccount)
+      unzip -l $(Build.SourcesDirectory)/$(zipfileName) 
+      unzip $(Build.SourcesDirectory)/$(zipfileName)  –d $(Build.SourcesDirectory)/unzipped
+      ls -lR $(Build.SourcesDirectory)/unzipped
