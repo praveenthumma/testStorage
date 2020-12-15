@@ -38,3 +38,12 @@ steps:
       unzip -l $(Build.SourcesDirectory)/$(zipfileName)
       unzip $(Build.SourcesDirectory)/$(zipfileName) 
       ls -l
+      
+- task: DownloadPipelineArtifact@2
+  inputs:
+    source: 'specific'
+    project: $(projectName)
+    artifact: 'DependencyManagement'
+    pipeline: 12
+    runVersion: '0.0.1-SNAPSHOT'
+    path: $(Build.SourcesDirectory)/
