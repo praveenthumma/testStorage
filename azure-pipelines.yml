@@ -9,7 +9,7 @@ trigger:
      - master/*
 
 variables:
-- group: release
+- group: storageInfo
 - name: storageSAS
   value: 'My STorage'
 
@@ -24,6 +24,8 @@ steps:
 - script: |
     echo Add other tasks to build, test, and deploy your project.
     echo See https://aka.ms/yaml
+    echo $(storageContainer)
+    echo $(storageAccount)
   displayName: 'Run a multi-line script'
 - task: AzureCLI@2
   inputs:
@@ -32,4 +34,4 @@ steps:
     scriptLocation: 'inlineScript'
     inlineScript: | 
       mkdir $(Build.SourcesDirectory)\BlobFile
-      az storage blob download --container-name container1 --file $(Build.SourcesDirectory)\testfile.tar --name "testfile.tar" --sas-token $tpstoragesas --account-name $storageAccountName
+      az storage blob download --container-name $(storageContainer) --file $(Build.SourcesDirectory)\testfile.tar --name "testfile.tar" --sas-token '$(sasToken)' --account-name $(storageAccount)
