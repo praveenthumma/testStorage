@@ -19,8 +19,12 @@ pool:
 
 steps:
 
+- task: CmdLine@2
+  inputs:
+    script: 'echo externalVariable $(externalVariable)' 
+
 - task: AzureCLI@2
-  enabled : true
+  enabled : false
   inputs:
     azureSubscription: $(azureSubscription)
     connectedServiceNameARM : $(serviceConnectionName)
