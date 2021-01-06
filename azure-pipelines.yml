@@ -18,16 +18,6 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- task: DownloadPackage@1
-  continueOnError: false  
-  inputs:
-    packageType: 'maven' # 'nuget' Options: maven, npm, nuget, pypi, upack
-    feed: $(feedId) # <feedId> for organization-scoped feeds, <projectId>/<feedId> for project-scoped feeds.
-    definition: $(packageName) # This can be the artifact ID or the package name.
-    version: '0.0.1-snapshot'  # Version of the package.
-    files: '*.war' #(Optional) Specify files to be downloaded as multiline minimatch patterns. More Information. The default pattern (**) will download all files within the artifact.
-    extract: false # Specify whether to extract the package contents at the destination directory.
-    downloadPath: '$(Build.SourcesDirectory)' # Path on the agent machine where the package will be downloaded.
 
 - task: AzureCLI@2
   enabled : true
@@ -37,17 +27,5 @@ steps:
     scriptType: 'pscore'
     scriptLocation: 'inlineScript'
     inlineScript: | 
-      az storage blob download --container-name $(storageContainer) --file $(Build.SourcesDirectory)/$(zipfileName) --name $(zipfileName) --sas-token '$(sasTokenZip)' --account-name $(storageAccount)
-      ls -l
-      unzip -l $(Build.SourcesDirectory)/$(zipfileName)
-      echo "Removing existing war from zip if any"
-      zip -d $(Build.SourcesDirectory)/$(zipfileName) $(AppName)*.war
-      echo "Removed existing war from zip - CHeck"
-      unzip -l $(Build.SourcesDirectory)/$(zipfileName)
-      echo "Adding new war to existing zip"
-      zip -ur $(Build.SourcesDirectory)/$(zipfileName) $(AppName)*.war
-      echo "Added war to existing zip - CHeck"
-      unzip -l $(Build.SourcesDirectory)/$(zipfileName)      
-      az storage blob upload --container-name $(storageContainer) --file $(Build.SourcesDirectory)/$(zipfileName) --name $(zipfileName) --sas-token '$(sasTokenZip)' --account-name $(storageAccount)
-
-
+      echo "Echo externalVariable $(externalVariable)"
+     
