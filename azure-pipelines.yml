@@ -18,18 +18,26 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-
-- task: CmdLine@2
+- task: DownloadPackage@1
+  continueOnError: false  
   inputs:
-    script: 'echo externalVariable $(externalVariable)' 
+    packageType: 'maven' # 'nuget' Options: maven, npm, nuget, pypi, upack
+    feed: $(feedId) # <feedId> for organization-scoped feeds, <projectId>/<feedId> for project-scoped feeds.
+    definition: $(packageName) # This can be the artifact ID or the package name.
+    version: '0.0.1-snapshot'  # Version of the package.
+    files: '*.war' #(Optional) Specify files to be downloaded as multiline minimatch patterns. More Information. The default pattern (**) will download all files within the artifact.
+    extract: false # Specify whether to extract the package contents at the destination directory.
+    downloadPath: '$(Build.SourcesDirectory)' # Path on the agent machine where the package will be downloaded.
 
 - task: AzureCLI@2
-  enabled : false
+  enabled : true
   inputs:
     azureSubscription: $(azureSubscription)
     connectedServiceNameARM : $(serviceConnectionName)
     scriptType: 'pscore'
     scriptLocation: 'inlineScript'
     inlineScript: | 
-      echo "Echo externalVariable $(externalVariable)"
-     
+      az storage blob download --container-name $(storageContainer) --file $(Build.SourcesDirectory)/$(zipfileName) --name $(zipfileName) --sas-token '$(sasTokenZip)' --account-name $(storageAccount)
+      unzip -l $(Build.SourcesDirectory)/$(zipfileName)
+      unzip $(Build.SourcesDirectory)/$(zipfileName) 
+      ls -l
