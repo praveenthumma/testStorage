@@ -12,4 +12,4 @@
    * Zips the directory 
    * Lists the contents of the zip.
 
-# **All the variables needs to be defined in the pipeline libraries for thsi to work.**
+# **All the variables needs to be defined in the pipeline libraries for this to work.**
